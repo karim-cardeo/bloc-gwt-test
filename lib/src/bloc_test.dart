@@ -139,12 +139,12 @@ import 'package:test/test.dart' as test;
 void blocTest<B extends BlocBase<State>, State>(
   String description, {
   FutureOr<void> Function()? setUp,
-  required B Function() build,
+  required B Function() given,
   State Function()? seed,
-  Function(B bloc)? act,
+  Function(B bloc)? when,
   Duration? wait,
   int skip = 0,
-  dynamic Function()? expect,
+  dynamic Function()? then,
   Function(B bloc)? verify,
   dynamic Function()? errors,
   FutureOr<void> Function()? tearDown,
@@ -155,12 +155,12 @@ void blocTest<B extends BlocBase<State>, State>(
     () async {
       await testBloc<B, State>(
         setUp: setUp,
-        given: build,
+        given: given,
         seed: seed,
-        when: act,
+        when: when,
         wait: wait,
         skip: skip,
-        then: expect,
+        then: then,
         verify: verify,
         errors: errors,
         tearDown: tearDown,
@@ -187,14 +187,14 @@ Future<void> testBloc<B extends BlocBase<State>, State>({
 }) async {
   var shallowEquality = false;
   final unhandledErrors = <Object>[];
-  final localBlocObserver =
-      // ignore: deprecated_member_use
-      BlocOverrides.current?.blocObserver ?? Bloc.observer;
-  final testObserver = _TestBlocObserver(
-    localBlocObserver,
-    unhandledErrors.add,
-  );
-  Bloc.observer = testObserver;
+  // final localBlocObserver =
+  //     // ignore: deprecated_member_use
+  //     BlocOverrides.current?.blocObserver ?? Bloc.observer;
+  // final testObserver = _TestBlocObserver(
+  //   localBlocObserver,
+  //   unhandledErrors.add,
+  // );
+  // Bloc.observer = testObserver;
 
   await runZonedGuarded(
     () async {
